@@ -3,15 +3,15 @@
 #include <BH1750.h>
 #include <Wire.h>
 
-//please enter your sensitive data in the Secret tab
-char ssid[] = "Aryan";
-char pass[] = "123456789";
 
-WiFiClient client;
-BH1750 lightMeter;
+char yourhotspot[] = "Aryan";
+char passkey[] = "123456789";
 
-char   HOST_NAME[] = "maker.ifttt.com";
-String PATH_NAME  = "/trigger/lightsensor/with/key/giaxwJZI9ala1sWuIBEs4kg0BueWF_NRMOCaOK1PTyw";
+WiFiClient purchaser;
+BH1750 photoread;
+
+char   organizer[] = "maker.ifttt.com";
+String route  = "/trigger/lightsensor/with/key/giaxwJZI9ala1sWuIBEs4kg0BueWF_NRMOCaOK1PTyw";
 String queryString = "?value1=57&value2=25";
 
 void setup() {
@@ -20,13 +20,13 @@ void setup() {
   Serial.print("START");
   while (!Serial);
 
-  // connect to web server on port 80:
-     WiFi.begin(ssid, pass);
+  
+     WiFi.begin(yourhotspot, passkey);
      Wire.begin();
 while(true)
   {
-  if (client.connect(HOST_NAME, 80)) {
-    // if connected:
+  if (purchaser.connect(organizer, 80)) {
+    
     Serial.println("Connected to server");
     break;
   }
@@ -36,15 +36,12 @@ while(true)
   }
   delay(500);
 }
-lightMeter.begin();
+photoread.begin();
 Serial.println("Connected to server");
 }
 void loop() {
   Serial.print("START");
-  float lux = lightMeter.readLightLevel();
-
-  // Serial.println("Light sensor: ");
-  // Serial.p'int(lux);
+  float lux = photoread.readLightLevel();
 
   queryString +="?value1=" ;
   queryString += lux;
@@ -54,22 +51,22 @@ void loop() {
 
     // make a HTTP request:
     // send HTTP header
-    client.println("GET " + PATH_NAME + queryString + " HTTP/1.1");
-    client.println("Host: " + String(HOST_NAME));
-    client.println("Connection: close");
-    client.println(); // end HTTP header
+    purchaser.println("GET " + route + queryString + " HTTP/1.1");
+    purchaser.println("Host: " + String(organizer));
+    purchaser.println("Connection: close");
+    purchaser.println(); 
 
 
-    while (client.connected()) {
-      if (client.available()) {
-        // read an incoming byte from the server and print it to serial monitor:
-        char c = client.read();
+    while (purchaser.connected()) {
+      if (purchaser.available()) {
+        
+        char c = purchaser.read();
         Serial.print(c);
       }
     }
 
-    // the server's disconnected, stop the client:
-    client.stop();
+    // the server's disconnected, stop the purchaser:
+    purchaser.stop();
     Serial.println();
     Serial.println("disconnected");
   }
